@@ -1,0 +1,1 @@
+players_database/fide_players_list.xml filter=lfs diff=lfs merge=lfs -text
