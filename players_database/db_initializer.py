@@ -53,9 +53,8 @@ class DbInitializer(SessionManager):
         last_name = None
 
         #If full name in XML file has no commas, I presume this name format: [fname] [mname] [lname]
-        #where any one of these names is optional.
-        #For some cultures, this interpretation is correct and maybe for other cultures it's incorrect.
-        #I'm not going to overcomplicate things by figuring out when this interpretation is right or wrong.
+        #where the middle and last name are optional. This is a very inexact heuristic that doesn't take into account
+        #the differences between naming conventions in different cultures, but it's an easy way to work with names.
         full_name = player.findall("name")[0].text
 
         if "," not in full_name:
