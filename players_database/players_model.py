@@ -1,18 +1,14 @@
-#Model in Model View Controller
 from sqlalchemy import text
 from players_database.connection_manager import engine
 from players_database.connection_manager import SessionManager
 from players_database.db_tables import TitledChessPlayer
 
-
-#Maybe rename the class to PlayersManager/PlayerManager
-#Maybe have a separate module/class for querying the nicknames table.
-
-
-
 class PlayersModel(SessionManager):
+  """The Model in the Model, View, Controller architecture, allowing the user
+  to access info in the titled_chess_players table."""
   
   def get_first_last_names(self):
+    """Returns a list of the first and last names of all players in the table."""
     sql_query = text("SELECT CONCAT(first_name, ' ', last_name) FROM titled_chess_players")
 
     print(type(sql_query))

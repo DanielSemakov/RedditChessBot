@@ -1,13 +1,14 @@
-#Deals with creating the initial tables in the database and inserting values into
-#those tables
 from players_database import db_tables
 from players_database.connection_manager import SessionManager
 from players_database.connection_manager import engine
 import xml.etree.ElementTree as ET
-from sqlalchemy import create_engine, inspect
+from sqlalchemy import inspect
 from players_database.db_tables import TitledChessPlayer
-class DbInitializer(SessionManager):
 
+
+class DbInitializer(SessionManager):
+  """Creates the initial tables in the database and inserting values into
+  those tables."""
 
   def __init__(self):
     super().__init__()
@@ -25,8 +26,11 @@ class DbInitializer(SessionManager):
     """
     Scan XML file of FIDE players, find all titled players, and add their info to the
     titled_chess_players table. Assumptions are made to separate between a player's first,
-    middle, and last name. If the table already contains player names, the function
-    terminates.
+    middle, and last name. These assumptions are inexact and don't take into account the
+    differences between naming conventions in different cultures, but they satisfy the
+    requirements of this project.
+
+    If the table already contains player names, the function terminates.
     """
     num_players_in_db = self.session.query(TitledChessPlayer).count()
     if num_players_in_db > 0:
@@ -40,7 +44,6 @@ class DbInitializer(SessionManager):
     titled_players = []
 
     for player in root.findall("player"):
-      #Only add titled players to table
       title = player.find("title").text
       if title:
 
@@ -49,8 +52,8 @@ class DbInitializer(SessionManager):
         last_name = None
 
         #If full name in XML file has no commas, I presume this name format: [fname] [mname] [lname]
-        #where the first, middle, and last name are optional. This is a very inexact heuristic that doesn't take into account
-        #the differences between naming conventions in different cultures, but it's an easy way to work with names.
+        #where the middle and last name are optional. I assume the middle name is made up of all
+        #tokens between the first and last name
         full_name = player.findall("name")[0].text
 
         if "," not in full_name:
@@ -62,7 +65,7 @@ class DbInitializer(SessionManager):
           elif len(full_name_delimited) > 2:
             last_name = full_name_delimited[len(full_name_delimited) - 1]
 
-            #I assume the middle name is made up of all names between the first and last name
+            #Determine the middle name
             full_name_delimited.pop(0)
             full_name_delimited.pop(len(full_name_delimited) - 1)
 
@@ -77,7 +80,7 @@ class DbInitializer(SessionManager):
         else:
           # If full name has at least one comma but does not end in a comma
           # I assume all the names before the first comma make up the last name
-          # e.g. with "Abreu Mijares, Elias Eduardo," I assume "Abreu Mijares" is the last name
+          # E.g. with "Abreu Mijares, Elias Eduardo," I assume "Abreu Mijares" is the last name
           names_delimited_comma = full_name.split(',')
 
           # Deals with situations such as this: "[last name] , [first name]"

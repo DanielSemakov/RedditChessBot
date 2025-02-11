@@ -1,11 +1,9 @@
 import praw
-
 from players_database.db_initializer import DbInitializer
 from view import View
 from players_database.players_model import PlayersModel
 from redditor_model import RedditorModel
 from controller import Controller
-import time
 from dotenv import load_dotenv
 import os
 
@@ -21,12 +19,10 @@ def main():
 
         if og_message is not None:
             print("Tagged message received")
+
             redditor_model = RedditorModel(og_message.author)
             print("Created redditor_model")
 
-            #Returns dictionary of all chess players the redditor has ever mentioned
-            #in comments and submissions and how many times those players have been
-            # mentioned. Dictionary is ordered top-down from most mentioned to least mentioned.
             player_mentions = controller.get_player_mentions(redditor_model)
             print("Got player mentions")
 

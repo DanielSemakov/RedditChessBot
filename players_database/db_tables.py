@@ -1,6 +1,4 @@
-from sqlalchemy import create_engine, ForeignKey
-from sqlalchemy import MetaData
-from sqlalchemy import Table
+from sqlalchemy import ForeignKey
 from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import String
@@ -42,10 +40,6 @@ class Nickname(Base):
 
   nickname = Column("nickname", String, ForeignKey(TitledChessPlayer.id), primary_key = True)
   player_id = Column("player_id", Integer)
-
-  #There's a webpage I found online detailing how to create foreign keys but I have yet to understand how it works:
-  #https://stackoverflow.com/questions/18807322/sqlalchemy-foreign-key-relationship-attributes
-  #Have to use ForeignKey() as I did above and also relationship() which I'm still confused about
 
   def __init__(self, nickname, player_id):
       self.nickname = nickname

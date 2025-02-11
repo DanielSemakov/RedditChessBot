@@ -1,12 +1,5 @@
-#Maybe I should instead get the redditor's comments and posts via
-#the View class. Aren't the comments/posts more like the UI than
-#the DB?
-
-#I think I've decided to keep this class separate. View interacts specifically
-# with my Reddit bot account (inbox and replying). RedditorModel interacts with any
-# Reddit account (view comments and submissions)
-
-class RedditorModel: 
+class RedditorModel:
+  """Represents a Reddit account, which can be scanned for comments and submissions."""
   
   def __init__(self, redditor):
     self.redditor = redditor

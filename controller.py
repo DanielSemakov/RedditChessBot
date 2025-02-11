@@ -1,9 +1,6 @@
-#Controller in Model View Controller
-
-from players_database.players_model import PlayersModel
-
-
 class Controller:
+  """The Controller in the Model, View Controller architecture. This class contains
+  business code and manages interactions between the Model and the View."""
 
   def __init__(self, model, view):
     self.model = model
@@ -48,22 +45,6 @@ class Controller:
   def reply_to_msg(self, original_message, player_mentions):
     """Replies to original comment with list of top 10 most mentioned chess players and
     how many times the commenter has mentioned each of them"""
-
-    #OG Code:
-
-    # commenter = original_message.author
-    # reply = f"{commenter}'s most mentioned chess players:\n\n"
-    #
-    # index = 1
-    #
-    # for player_name in mentions_dict:
-    #   num_mentions = mentions_dict[player_name]
-    #   reply += f"{index}. {player_name} ({num_mentions} times)\n"
-    #
-    #   if index >= 10:
-    #     break
-    #
-    #   index += 1
 
     # Dictionaries, such as player_mentions, have an arbitrary order by default.
     # Here, I convert mentions_dict to a list of keys sorted in descending order based on the values
