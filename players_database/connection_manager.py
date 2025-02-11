@@ -13,7 +13,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 
-engine = create_engine("sqlite:///mydb.db", echo=True)
+engine = create_engine("sqlite:///players_database/mydb.db", echo=True)
 print("Database created")
 
 # create a Session

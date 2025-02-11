@@ -3,38 +3,32 @@
 from players_database import db_tables
 from players_database.connection_manager import SessionManager
 from players_database.connection_manager import engine
-
 import xml.etree.ElementTree as ET
-
 from sqlalchemy import create_engine, inspect
-
-from players_database.db_tables import ChessPlayer
-
-
-#Maybe have separate classes to initialize chess_players DB and nicknames DB
+from players_database.db_tables import TitledChessPlayer
 class DbInitializer(SessionManager):
+
 
   def __init__(self):
     super().__init__()
     self.create_tables()
     self.insert_titled_players()
 
-  #Maybe unnecessary to have this in a function
   def create_tables(self):
     inspector = inspect(engine)
     existing_tables = inspector.get_table_names()
 
-    if 'chess_players' not in existing_tables:  # Example table name
+    if 'titled_chess_players' not in existing_tables:  # Example table name
       db_tables.Base.metadata.create_all(bind=engine)
 
   def insert_titled_players(self):
     """
     Scan XML file of FIDE players, find all titled players, and add their info to the
-    chess_players table. Assumptions are made to separate between a player's first,
+    titled_chess_players table. Assumptions are made to separate between a player's first,
     middle, and last name. If the table already contains player names, the function
     terminates.
     """
-    num_players_in_db = self.session.query(ChessPlayer).count()
+    num_players_in_db = self.session.query(TitledChessPlayer).count()
     if num_players_in_db > 0:
       return
 
@@ -45,15 +39,17 @@ class DbInitializer(SessionManager):
 
     titled_players = []
 
-    for player in root:
-      if player.findall("title")[0].text != None:
+    for player in root.findall("player"):
+      #Only add titled players to table
+      title = player.find("title").text
+      if title:
 
         first_name = None
         middle_name = None
         last_name = None
 
         #If full name in XML file has no commas, I presume this name format: [fname] [mname] [lname]
-        #where the middle and last name are optional. This is a very inexact heuristic that doesn't take into account
+        #where the first, middle, and last name are optional. This is a very inexact heuristic that doesn't take into account
         #the differences between naming conventions in different cultures, but it's an easy way to work with names.
         full_name = player.findall("name")[0].text
 
@@ -119,11 +115,14 @@ class DbInitializer(SessionManager):
             if len(possible_middle_names) > 0:
               middle_name = " ".join(possible_middle_names)
 
-        player = db_tables.ChessPlayer(player_id,
+        rating = int(player.find('rating').text)
+
+        player = db_tables.TitledChessPlayer(player_id,
                              first_name,
                              middle_name,
                              last_name,
-                             titled_flag=True)
+                             rating,
+                             titled_flag = True)
         titled_players.append(player)
 
         player_id += 1
