@@ -18,16 +18,10 @@ def main():
         og_message = controller.get_unread_mention()
 
         if og_message is not None:
-            print("Tagged message received")
-
             redditor_model = RedditorModel(og_message.author)
-            print("Created redditor_model")
 
             player_mentions = controller.get_player_mentions(redditor_model)
-            print("Got player mentions")
-
             controller.reply_to_msg(og_message, player_mentions)
-            print("Sent reply to message")
 
 
 def create_redditor_bot():
