@@ -22,12 +22,13 @@ class Controller:
     comments = redditor.get_comments()
     submissions = redditor.get_submissions()
 
-    player_names = self.model.get_full_names()
+    player_names = self.model.get_first_last_names()
     print("Player names type: " + str(type(player_names[0])))
 
     #Create player_mentions dict with all player names as keys and 0 for all initial values
     player_mentions = dict.fromkeys(player_names, 0)
-    
+
+    #Checks for full name mentions
     for comment in comments:
       for player_name in player_names:
         player_mentions[player_name] += comment.body.lower().count(player_name.lower())
@@ -39,7 +40,7 @@ class Controller:
 
     print(player_mentions)
 
-
+    #Add code to check first or last name mention
 
     return player_mentions
     
