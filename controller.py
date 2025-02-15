@@ -1,3 +1,11 @@
+import collections
+import functools
+import operator
+
+import dict_tools
+from PlayerMentionProcessor import PlayerMentionProcessor
+
+
 class Controller:
   """The Controller in the Model, View Controller architecture. This class contains
   business code and manages interactions between the Model and the View."""
@@ -20,24 +28,15 @@ class Controller:
     submissions = redditor.get_submissions()
 
     player_names = self.model.get_first_last_names()
-    print("Player names type: " + str(type(player_names[0])))
 
     #Create player_mentions dict with all player names as keys and 0 for all initial values
     player_mentions = dict.fromkeys(player_names, 0)
 
-    #Checks for full name mentions
-    for comment in comments:
-      for player_name in player_names:
-        player_mentions[player_name] += comment.body.lower().count(player_name.lower())
+    mention_processor = PlayerMentionProcessor(player_mentions)
+    cmnt_mentions = mention_processor.process_comments(comments)
+    sub_mentions = mention_processor.process_submissions(submissions)
 
-    for submission in submissions:
-      for player_name in player_names:
-        player_mentions[player_name] += submission.title.lower().count(player_name.lower())
-        player_mentions[player_name] += submission.selftext.lower().count(player_name.lower())
-
-    print(player_mentions)
-
-    #Add code to check first or last name mention
+    player_mentions = dict_tools.combine_and_sum_dicts([cmnt_mentions, sub_mentions])
 
     return player_mentions
     

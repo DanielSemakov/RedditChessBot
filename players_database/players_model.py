@@ -11,8 +11,6 @@ class PlayersModel(SessionManager):
     """Returns a list of the first and last names of all players in the table."""
     sql_query = text("SELECT CONCAT(first_name, ' ', last_name) FROM titled_chess_players")
 
-    print(type(sql_query))
-
     with engine.connect() as connection:
       result = connection.execute(sql_query)
 
