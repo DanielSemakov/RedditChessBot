@@ -1,7 +1,7 @@
 from sqlalchemy import text
-from players_database.connection_manager import engine
-from players_database.connection_manager import SessionManager
-from players_database.db_tables import TitledChessPlayer
+from src.players_database.connection_manager import engine
+from src.players_database.connection_manager import SessionManager
+from src.players_database.db_tables import TitledChessPlayer
 
 class PlayersModel(SessionManager):
   """The Model in the Model, View, Controller architecture, allowing the user

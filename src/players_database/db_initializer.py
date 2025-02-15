@@ -1,9 +1,9 @@
-from players_database import db_tables
-from players_database.connection_manager import SessionManager
-from players_database.connection_manager import engine
+from src.players_database import db_tables
+from src.players_database.connection_manager import SessionManager
+from src.players_database.connection_manager import engine
 import xml.etree.ElementTree as ET
 from sqlalchemy import inspect
-from players_database.db_tables import TitledChessPlayer
+from src.players_database.db_tables import TitledChessPlayer
 
 
 class DbInitializer(SessionManager):
@@ -121,11 +121,11 @@ class DbInitializer(SessionManager):
         rating = int(player.find('rating').text)
 
         player = db_tables.TitledChessPlayer(player_id,
-                             first_name,
-                             middle_name,
-                             last_name,
-                             rating,
-                             titled_flag = True)
+                                             first_name,
+                                             middle_name,
+                                             last_name,
+                                             rating,
+                                             titled_flag = True)
         titled_players.append(player)
 
         player_id += 1

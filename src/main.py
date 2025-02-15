@@ -1,9 +1,9 @@
 import praw
-from players_database.db_initializer import DbInitializer
+from src.players_database.db_initializer import DbInitializer
 from view import View
-from players_database.players_model import PlayersModel
+from src.players_database.players_model import PlayersModel
 from redditor_model import RedditorModel
-from controller import Controller
+from src.controller import Controller
 from dotenv import load_dotenv
 import os
 
@@ -25,7 +25,7 @@ def main():
 
 
 def create_redditor_bot():
-    load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
+    load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 
     username = os.getenv("REDDIT_USERNAME")
     password = os.getenv("REDDIT_PASSWORD")

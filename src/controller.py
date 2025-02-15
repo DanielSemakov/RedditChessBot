@@ -1,7 +1,3 @@
-import collections
-import functools
-import operator
-
 import dict_tools
 from PlayerMentionProcessor import PlayerMentionProcessor
 
