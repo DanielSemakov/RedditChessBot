@@ -99,3 +99,18 @@ def test_combine_and_sum_dict_three_dicts():
     # Assert
     assert combined_dict == {"Peter Leko": 4, "Wesley So": 3, "Vidit Gujrathi": 2}
 
+def test_combine_and_sum_dict_items_with_zero_values_returned():
+    """When the sum of the values of the inputted dictionary items are 0, those items
+    should still exist in the returned dictionary."""
+    # Arrange
+    dict1 = {"Magnus Carlsen": 0, "Anish Giri": 0, "Alexandra Botez": 0}
+    dict2 = {"Magnus Carlsen": 0, "Peter Leko": 0, "Wesley So": 0}
+
+    dict_list = [dict1, dict2]
+
+    # Act
+    combined_dict = combine_and_sum_dicts(dict_list)
+
+    # Assert
+    assert combined_dict == {"Magnus Carlsen": 0, "Anish Giri": 0, "Alexandra Botez": 0,
+                             "Peter Leko": 0, "Wesley So": 0}

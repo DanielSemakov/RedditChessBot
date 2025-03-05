@@ -1,5 +1,6 @@
-import dict_tools
-from PlayerMentionProcessor import PlayerMentionProcessor
+from src import dict_tools
+from src.player_mention_processor import PlayerMentionProcessor
+from src.players_database import connection_manager
 
 
 class Controller:
@@ -19,23 +20,17 @@ class Controller:
     and submissions and how many times those players have been mentioned. Dictionary is 
     ordered top-down from most mentioned to least mentioned.
     """
-    
     comments = redditor.get_comments()
     submissions = redditor.get_submissions()
 
     player_names = self.model.get_first_last_names()
 
-    #Create player_mentions dict with all player names as keys and 0 for all initial values
-    player_mentions = dict.fromkeys(player_names, 0)
-
-    mention_processor = PlayerMentionProcessor(player_mentions)
+    mention_processor = PlayerMentionProcessor(player_names)
     cmnt_mentions = mention_processor.process_comments(comments)
     sub_mentions = mention_processor.process_submissions(submissions)
 
-    player_mentions = dict_tools.combine_and_sum_dicts([cmnt_mentions, sub_mentions])
+    return dict_tools.combine_and_sum_dicts([cmnt_mentions, sub_mentions])
 
-    return player_mentions
-    
 
   def reply_to_msg(self, original_message, player_mentions):
     """Replies to original comment with list of top 10 most mentioned chess players and
@@ -65,5 +60,7 @@ class Controller:
         break
 
       index += 1
+
+    print(reply)
 
     self.view.reply(original_message, reply)

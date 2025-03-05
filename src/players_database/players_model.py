@@ -1,4 +1,4 @@
-from sqlalchemy import text
+from sqlalchemy import text, func
 from src.players_database.connection_manager import engine
 from src.players_database.connection_manager import SessionManager
 from src.players_database.db_tables import TitledChessPlayer
@@ -9,13 +9,13 @@ class PlayersModel(SessionManager):
   
   def get_first_last_names(self):
     """Returns a list of the first and last names of all players in the table."""
-    sql_query = text("SELECT CONCAT(first_name, ' ', last_name) FROM titled_chess_players")
+    query = self.session.query(
+      func.concat(TitledChessPlayer.first_name, ' ', TitledChessPlayer.last_name)
+    )
 
-    with engine.connect() as connection:
-      result = connection.execute(sql_query)
+    result = query.all()
 
-      #Convert CursorResult to
-      return [i[0] for i in result.fetchall()]
+    return [name[0] for name in result]
 
   def get_names_ratings(self):
     """Returns a list of tuples containing name and rating info of all players. Each tuple
