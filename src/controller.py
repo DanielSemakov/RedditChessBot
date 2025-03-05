@@ -17,8 +17,7 @@ class Controller:
   def get_player_mentions(self, redditor):
     """
     Returns dictionary of all chess players the redditor has ever mentioned in comments 
-    and submissions and how many times those players have been mentioned. Dictionary is 
-    ordered top-down from most mentioned to least mentioned.
+    and submissions and how many times those players have been mentioned.
     """
     comments = redditor.get_comments()
     submissions = redditor.get_submissions()
