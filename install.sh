@@ -1,13 +1,34 @@
-echo Updating the server
-sudo apt-get update
+cd RedditChessBot || exit
 
-echo Installing pip
+echo "Updating the server."
+sudo apt-get update -y
+
+echo "Installing pip."
 sudo apt install python3-pip -y
 
-echo Installing virtual environment and packages
-sudo apt-get install python3-venv
-python3 -m venv .venv
+echo "Installing python3-venv."
+sudo apt-get install python3-venv -y
+
+#Check if the virtual environment exists. If not, create it.
+if [ ! -d ".venv" ]; then
+    echo "Creating a new virtual environment."
+    python3 -m venv .venv
+else
+    echo "Virtual environment already exists. Skipping creation."
+fi
+
+echo "Activating virtual environment."
 source .venv/bin/activate
-pip install -r RedditChessBot/requirements.txt
+
+echo "Upgrading pip."
+pip install --upgrade pip
+
+echo "Installing dependencies."
+pip install -r requirements.txt
+
+cd ..
+echo "Setup complete."
+
+
 
 
