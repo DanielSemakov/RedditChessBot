@@ -1,11 +1,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import os
 
 
-engine = create_engine("sqlite:///players_database/mydb.db", echo=True)
-print("Database created")
+#Get the absolute path to the `players_database` folder
+db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'mydb.db')
+engine = create_engine(f"sqlite:///{db_path}", echo=True)
 
-# create a Session
 Session = sessionmaker(bind=engine)
 
 class SessionManager(object):
