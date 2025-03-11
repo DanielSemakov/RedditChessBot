@@ -4,6 +4,7 @@ from src.players_database.connection_manager import engine
 import xml.etree.ElementTree as ET
 from sqlalchemy import inspect
 from src.players_database.db_tables import TitledChessPlayer
+import os
 
 
 class DbInitializer(SessionManager):
@@ -36,7 +37,9 @@ class DbInitializer(SessionManager):
     if num_players_in_db > 0:
       return
 
-    tree = ET.parse("players_database/fide_players_list.xml")
+    #Get absolute path of xml file
+    xml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fide_players_list.xml')
+    tree = ET.parse(xml_path)
     root = tree.getroot()
 
     player_id = 0
