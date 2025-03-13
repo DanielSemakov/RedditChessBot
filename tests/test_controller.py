@@ -7,7 +7,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from src.redditor_model import RedditorModel
 
-ACTUAL_DB_PATH = '../src/players_database/mydb.db'
+
+ACTUAL_DB_PATH = os.path.abspath('../src/players_database/mydb.db')
 TEST_DB_PATH = 'players_database/mydb.db'
 
 @pytest.fixture(scope="function")
@@ -48,7 +49,8 @@ def test_get_player_mentions_multiple_mentions_from_submissions_and_comments(moc
     mock_comment2 = mocker.MagicMock()
 
     mock_comment1.body = "I love Fabiano Caruana! He's my favorite. Same with Anish gIRI."
-    mock_comment2.body = "Wow, VLADimir kramNIK is a legendary player. Same with wesLEY SO!!!"
+    mock_comment2.body = ("Wow, VLADimir kramNIK is a legendary player. Same with wesLEY SO!!! Fabiano Caruana Fabiano Caruana"
+                          "Fabiano Caruana Fabiano Caruana Fabiano Caruana Fabiano Caruana Fabiano Caruana Fabiano Caruana Fabiano Caruana Fabiano Caruana")
 
     comments = [mock_comment1, mock_comment2]
 
@@ -87,7 +89,7 @@ def test_get_player_mentions_multiple_mentions_from_submissions_and_comments(moc
     player_mentions = controller.get_player_mentions(redditor_model)
 
     #Assert
-    assert player_mentions["Fabiano Caruana"] == 1
+    assert player_mentions["Fabiano Caruana"] == 11
     assert player_mentions["Anish Giri"] == 2
     assert player_mentions["Vladimir Kramnik"] == 1
     assert player_mentions["Wesley So"] == 5
