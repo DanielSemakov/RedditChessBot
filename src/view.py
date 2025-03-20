@@ -9,10 +9,10 @@ class View:
   def get_unread_mention(self):
     """Returns oldest unread message and marks it as read"""
 
-    subreddit = self.reddit_bot.subreddit('testingground4bots')
+    subreddit = self.reddit_bot.subreddit('chess')
 
     for comment in subreddit.stream.comments(skip_existing=True):
-      if "!top10chessplayers" in comment.body.lower():
+      if "!top10mentions" in comment.body.lower():
         return comment
       time.sleep(5)
     return None
