@@ -1,27 +1,20 @@
-cd RedditChessBot || exit
+cd ~/RedditChessBot || { echo "Project folder not found"; exit 1; }
 
 echo "Updating the server..."
 sudo apt-get update -y
+sudo apt-get upgrade -y
 
-echo "Installing pip..."
-sudo apt install python3-pip -y
-
-echo "Installing python3-venv..."
-sudo apt-get install python3-venv -y
-
-echo "Installing Git LFS..."
-sudo apt-get install -y git-lfs
+echo "Installing required packages..."
+sudo apt-get install -y python3-pip python3-venv git git-lfs
 git lfs install
 
-echo "Pulling objects using Git LFS..."
-git lfs pull
+echo "Pulling Git LFS objects..."
+git lfs pull || echo "Git LFS pull failed or not needed"
 
-#Check if the virtual environment exists. If not, create it.
+# Create virtual environment if missing
 if [ ! -d ".venv" ]; then
-    echo "Creating a new virtual environment..."
+    echo "Creating virtual environment..."
     python3 -m venv .venv
-else
-    echo "Virtual environment already exists. Skipping creation."
 fi
 
 echo "Activating virtual environment..."
@@ -33,9 +26,8 @@ pip install --upgrade pip
 echo "Installing dependencies..."
 pip install -r requirements.txt
 
-cd ..
-echo "Setup complete..."
-
+echo "Setup complete. To run your bot:"
+echo "source .venv/bin/activate && python bot.py"
 
 
 
