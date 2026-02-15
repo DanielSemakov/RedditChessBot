@@ -1,8 +1,8 @@
 import praw
 from src.players_database.db_initializer import DbInitializer
-from view import View
+from src.view import View
 from src.players_database.players_model import PlayersModel
-from redditor_model import RedditorModel
+from src.redditor_model import RedditorModel
 from src.controller import Controller
 from dotenv import load_dotenv
 import os
