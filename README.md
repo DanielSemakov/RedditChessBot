@@ -20,8 +20,7 @@ The program runs a continuous stream that monitors Reddit for mentions. When a m
 
 The bot underwent rigorous testing with unit and integration tests to ensure its responses are accurate and reliable.
 
-Currently, I am in the process of deploying the bot on Amazon Web Services, allowing it to operate 24/7.
-
+I deployed the bot on the DigitalOcean cloud infrastructure.
 
 ## Lessons Learned
 
